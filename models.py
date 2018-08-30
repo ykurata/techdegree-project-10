@@ -1,6 +1,6 @@
 import datetime
+import json
 
-from flask.ext.login import UserMixin
 from argon2 import PasswordHasher
 from itsdangerous import (TimedJSONWebSignatureSerializer as Serializer,
                           BadSignature, SignatureExpired)
@@ -12,7 +12,7 @@ DATABASE = SqliteDatabase('todos.sqlite')
 HASHER = PasswordHasher()
 
 
-class User(UserMixin, Model):
+class User(Model):
     username = CharField(unique=True)
     email = CharField(unique=True)
     password = CharField()
@@ -60,12 +60,11 @@ class User(UserMixin, Model):
 
 
 class Todo(Model):
-    task = CharField()
+    name = CharField()
     created_at = DateTimeField(default=datetime.datetime.now)
 
     class Meta:
         database = DATABASE
-
 
 
 def initialize():

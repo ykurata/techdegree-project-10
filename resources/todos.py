@@ -9,7 +9,7 @@ import models
 
 todo_fields = {
     'id': fields.Integer,
-    'task': fields.String
+    'name': fields.String
 }
 
 
@@ -26,9 +26,9 @@ class TodoList(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument(
-            'task',
+            'name',
             required = True,
-            help = 'No task provided',
+            help = 'No task name provided',
             location = ['form', 'json']
         )
         super().__init__()
@@ -36,11 +36,11 @@ class TodoList(Resource):
     def get(self):
         todos = [marshal(todo, todo_fields)
                 for todo in models.Todo.select()]
-        return {'todos': todos}
+        return todos
 
 
     @marshal_with(todo_fields)
-    @auth.login_required
+    #@auth.login_required
     def post(self):
         args = self.reqparse.parse_args()
         todo = models.Todo.create(**args)
@@ -53,9 +53,9 @@ class Todo(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument(
-            'task',
+            'name',
             required = True,
-            help = 'No task provided',
+            help = 'No task name provided',
             location = ['form', 'json']
         )
         super().__init__()
@@ -64,8 +64,9 @@ class Todo(Resource):
     def get(self, id):
         return todo_or_404(id)
 
+
     @marshal_with(todo_fields)
-    @auth.login_required
+    #@auth.login_required
     def put(self, id):
         args = self.reqparse.parse_args()
         query = models.Todo.update(**args).where(models.Todo.id==id)
@@ -73,7 +74,8 @@ class Todo(Resource):
         return (models.Todo.get(models.Todo.id==id), 200,
                 {'Location': url_for('resources.todos.todo', id=id)})
 
-    @auth.login_required
+
+    #@auth.login_required
     def delete(self, id):
         query = models.Todo.delete().where(models.Todo.id==id)
         query.execute()
