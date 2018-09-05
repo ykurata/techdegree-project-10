@@ -1,12 +1,10 @@
 from flask import (Flask, g, jsonify, render_template, flash, redirect,
                     url_for)
-from flask.ext.login import LoginManager
 
 from flask_limiter import Limiter
 from flask_limiter.util import get_ipaddr
 
 from auth import auth
-
 import config
 import models
 from resources.todos import todos_api
