@@ -24,7 +24,7 @@ class AppTest(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_get_todos(self):
-        """Test api returns 200 status code"""
+        """Test api returns status code 200"""
         response = self.app.get('/api/v1/todos')
         self.assertEqual(response.status_code, 200)
 
