@@ -40,7 +40,7 @@ class TodoList(Resource):
 
 
     @marshal_with(todo_fields)
-    #@auth.login_required
+    @auth.login_required
     def post(self):
         args = self.reqparse.parse_args()
         todo = models.Todo.create(**args)
@@ -66,7 +66,7 @@ class Todo(Resource):
 
 
     @marshal_with(todo_fields)
-    #@auth.login_required
+    @auth.login_required
     def put(self, id):
         args = self.reqparse.parse_args()
         query = models.Todo.update(**args).where(models.Todo.id==id)
@@ -75,7 +75,7 @@ class Todo(Resource):
                 {'Location': url_for('resources.todos.todo', id=id)})
 
 
-    #@auth.login_required
+    @auth.login_required
     def delete(self, id):
         query = models.Todo.delete().where(models.Todo.id==id)
         query.execute()
